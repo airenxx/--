@@ -4,6 +4,9 @@ import Login from '../login/login'
 import registered from '../login/registered'
 import Index from '../index/index'
 import UserManagement from '../index/userManagement'
+import UpdateUser from '../index/updateUser'
+import QbManagement from '../index/qbManagement'
+import AnswerCenter from '../index/answerCenter';
 Vue.use(Router)
 
 export default new Router({
@@ -31,7 +34,22 @@ export default new Router({
         path: 'userManagement',
         name: 'userManagement', 
         component: UserManagement 
-      }]
+      },{
+        path:'/updateUser/:id',
+        name:'updateUser',
+        component:UpdateUser
+      },
+      {
+        path:'qbManagement',
+        name:'qbManagement',
+        component:QbManagement
+      },
+      {
+        path:'AnswerCenter',
+        name:'AnswerCenter',
+        component:AnswerCenter
+      }
+    ]
     }
   ]
 })

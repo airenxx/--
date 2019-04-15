@@ -19,7 +19,7 @@
           </el-select>
         </ElFormItem>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleFrom')">确认</el-button>
+          <el-button type="primary" @click="submitForm('ruleFrom')">修改</el-button>
           <el-button type="primary" @click="reset('ruleFrom')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -44,31 +44,41 @@ export default {
         name: "",
         pass: "",
         checkPass: "",
-        Character:''
+        Character:'',
+        id:""
       },
       rules: {
         name: [{ required: true, message: "请输入账号", trigger: "blur" }],
         pass: [{ required: true, message: "请输入密码", trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }]
       }
-    };
+    }
+  },
+  beforeRouteEnter:(to,form,next)=>{
+      next(vm=>{
+          if(to.params.param){
+              vm.ruleFrom.name=vm.$route.params.param.name
+              vm.ruleFrom.pass=vm.$route.params.param.pass
+              vm.ruleFrom.Character=vm.$route.params.param.Character
+              vm.ruleFrom.id=vm.$route.params.id
+          }
+      })
   },
   methods: {
     submitForm(ruleFrom) {
       this.$refs[ruleFrom].validate(valid => {
         if (valid) {
+           
           let userInfo={
             name:this.ruleFrom.name,
             pass:this.ruleFrom.pass,
-            Character:this.ruleFrom.Character
+            Character:this.ruleFrom.Character,
+            index:this.ruleFrom.id
           }
-           Api.CacheUser(userInfo);
-          this.$refs[ruleFrom].resetFields()
-          this.$router.push("login")
-        } else {
-          return false;
-        }
-      });
+          this.$store.commit("updateIdentity",userInfo)
+          this.$router.go(-1)
+        } 
+      })
     },
     reset(ruleFrom) {
       this.$refs[ruleFrom].resetFields()
@@ -76,10 +86,5 @@ export default {
   }
 };
 </script>
-<style scoped>
-.el-row{
-  margin-top:15%;
-  margin-left: 35%
-}
-</style>
+
 
